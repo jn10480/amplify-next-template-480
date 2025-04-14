@@ -27,26 +27,37 @@ export default function App() {
 
   function createTodo() {
     client.models.Todo.create({
-      content: window.prompt("Todo content"),
+      content: window.prompt("トークテーマを入力してください"),
     });
+  }
+
+  function deleteTodo(todo: Schema["Todo"]["type"]) {
+    const confirmDelete = window.confirm(`削除しますか？\nトークテーマ: ${todo.content}`);
+    if (confirmDelete) {
+      client.models.Todo.delete({ id: todo.id });
+    }
+  }
+
+  function pickRandomTodo() {
+    if (todos.length === 0) {
+      alert("トークテーマを登録してください。");
+      return;
+    }
+    const randomTodo = todos[Math.floor(Math.random() * todos.length)];
+    alert(`トークテーマ: ${randomTodo.content}`);
   }
 
   return (
     <main>
-      <h1>My todos</h1>
-      <button onClick={createTodo}>+ new</button>
+      <h1>トークテーマ</h1>
+      <button onClick={pickRandomTodo}>トークテーマを選ぶ!</button>
       <ul>
         {todos.map((todo) => (
-          <li key={todo.id}>{todo.content}</li>
+          <li onClick={() => deleteTodo(todo)} key={todo.id}>{todo.content}</li>
         ))}
       </ul>
-      <div>
-        🥳 App successfully hosted. Try creating a new todo.
-        <br />
-        <a href="https://docs.amplify.aws/nextjs/start/quickstart/nextjs-app-router-client-components/">
-          Review next steps of this tutorial.
-        </a>
-      </div>
+      <div>トークテーマをクリックして削除</div>
+      <button onClick={createTodo}>追加</button>
     </main>
   );
 }
