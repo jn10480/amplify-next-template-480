@@ -7,9 +7,7 @@ import "./../app/app.css";
 import { Amplify } from "aws-amplify";
 import outputs from "@/amplify_outputs.json";
 
-import { useAuthenticator } from "@aws-amplify/ui-react";
-
-import { Authenticator } from "@aws-amplify/ui-react";
+import { Authenticator} from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 
 Amplify.configure(outputs);
@@ -18,8 +16,6 @@ const client = generateClient<Schema>();
 
 export default function App() {
   const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
-
-  const { signOut } = useAuthenticator();
 
   function listTodos() {
     client.models.Todo.observeQuery().subscribe({
@@ -55,7 +51,8 @@ export default function App() {
 
   return (
     <Authenticator>
-      <main>
+      {({ signOut, user }) => (
+        <main>
         <h1>トークテーマ</h1>
         <button onClick={pickRandomTodo}>トークテーマを選ぶ!</button>
         <ul>
@@ -65,8 +62,13 @@ export default function App() {
         </ul>
         <div>トークテーマをクリックして削除</div>
         <button onClick={createTodo}>追加</button>
+        <br />
+        <div>ログインユーザー: {user?.signInDetails?.loginId}</div>
+        <button onClick={signOut}>ログアウト</button>
       </main>
-      <button onClick={signOut}>Sign out</button>
+      
+      )}
+      
     </Authenticator>
   );
 }
