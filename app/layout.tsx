@@ -1,8 +1,17 @@
+"use client";
+
+import React from "react";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Amplify } from "aws-amplify";
 import "./app.css";
 
-const inter = Inter({ subsets: ["latin"] });
+import { Authenticator } from "@aws-amplify/ui-react";
+import "@aws-amplify/ui-react/styles.css";
+
+import outputs from "@/amplify_outputs.json";
+
+Amplify.configure(outputs);
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,8 +24,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
+        
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body>      
+        <Authenticator>
+          {children}
+        </Authenticator>
+      </body>
     </html>
   );
 }
