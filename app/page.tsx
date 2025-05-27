@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuthenticator } from "@aws-amplify/ui-react";
 import { useState, useEffect } from "react";
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "@/amplify/data/resource";
@@ -12,8 +11,6 @@ import "@aws-amplify/ui-react/styles.css";
 Amplify.configure(outputs);
 
 const client = generateClient<Schema>();
-  
-const { user, signOut } = useAuthenticator();
 
 export default function App() {
   const [todos, setTodos] = useState<Array<Schema["Todo"]["type"]>>([]);
@@ -52,7 +49,7 @@ export default function App() {
 
   return (
     <main>
-      <h1>{user?.signInDetails?.loginId}のトークテーマ</h1>
+      <h1>トークテーマ</h1>
       <button onClick={pickRandomTodo}>トークテーマを選ぶ!</button>
       <ul>
         {todos.map((todo) => (
@@ -61,7 +58,6 @@ export default function App() {
       </ul>
       <div>トークテーマをクリックして削除</div>
       <button onClick={createTodo}>追加</button>
-      <button onClick={signOut}>Sign out</button>
     </main>
   );
 }
