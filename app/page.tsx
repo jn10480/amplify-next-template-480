@@ -51,7 +51,9 @@ export default function App() {
 
   return (
     <Authenticator>
-      {({ signOut, user }) => (
+      {({ signOut, user }) => {
+        listTodos();
+        return(
         <main>
         <h1>トークテーマ</h1>
         <button onClick={pickRandomTodo}>トークテーマを選ぶ!</button>
@@ -67,7 +69,8 @@ export default function App() {
         <button onClick={signOut}>ログアウト</button>
       </main>
       
-      )}
+      );
+    }}
       
     </Authenticator>
   );
